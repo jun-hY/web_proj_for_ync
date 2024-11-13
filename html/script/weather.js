@@ -38,6 +38,7 @@ fetch(CurrnetWeather).then(res => res.json().then(data => {
     const CurrentWind = document.querySelector(".weather-details .wind-value");
     const CurrentSkyIcon = document.querySelector(".current-weather .icon");
     const CurrentSkyDescription = document.querySelector(".current-weather .description");
+    const CurrentWindDirection = document.querySelector(".weather-details .direction-value");
 
     const CurrentWeatherInfo = data.response.body.items.item;
     // Object.keys(CurrentWeatherInfo).forEach((i) => {
@@ -48,19 +49,37 @@ fetch(CurrnetWeather).then(res => res.json().then(data => {
         const isCurrentHumidity = CurrentWeatherInfo[i].category == `REH` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
         const isCurrentWind = CurrentWeatherInfo[i].category == `WSD` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
         const isCurrentSky = CurrentWeatherInfo[i].category == `SKY` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
+        const isCurrentWindDir = CurrentWeatherInfo[i].category == `VEC` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
+        const Value = CurrentWeatherInfo[i].fcstValue;
         if (isCurrentTemp) {
-            CurrentTemp.innerText = `${CurrentWeatherInfo[i].fcstValue}°C`;
+            CurrentTemp.innerText = `${Value}°C`;
+            return;
         }
         if (isCurrentHumidity) {
-            CurrentHumidity.innerText = `${CurrentWeatherInfo[i].fcstValue}%`;
+            CurrentHumidity.innerText = `${Value}%`;
+            return;
         }
         if (isCurrentWind) {
-            CurrentWind.innerText = `${CurrentWeatherInfo[i].fcstValue} m/s`;
+            CurrentWind.innerText = `${Value} m/s`;
+            return;
         }
         if (isCurrentSky) {
-            CurrentWeatherInfo[i].fcstValue;
-            CurrentSkyIcon.innerText = `${CurrentWeatherInfo[i].fcstValue < 3 ? `☀️` : CurrentWeatherInfo[i].fcstValue < 4 ? `🌤️` : `☁️`}`;
-            CurrentSkyDescription.innerText = `${CurrentWeatherInfo[i].fcstValue < 3 ? `맑음` : CurrentWeatherInfo[i].fcstValue < 4 ? `구름많음` : `흐림`}`;
+            CurrentSkyIcon.innerText = `${Value < 3 ? `☀️` : Value < 4 ? `🌤️` : `☁️`}`;
+            CurrentSkyDescription.innerText = `${Value < 3 ? `맑음` : Value < 4 ? `구름많음` : `흐림`}`;
+            return;
+        }
+        if (isCurrentWindDir) {
+            var direction = ``;
+            if (Value > 337 || Value <= 22) direction = `⬇`;
+            else if (Value <= 67) direction = `⬋`;
+            else if (Value <= 112) direction = `⬅`;
+            else if (Value <= 157) direction = `⬉`;
+            else if (Value <= 202) direction = `⬆`;
+            else if (Value <= 247) direction = `⬈`;
+            else if (Value <= 292) direction = `⮕`;
+            else if (Value <= 337) direction = `⬊`;
+
+            CurrentWindDirection.innerText = `${direction}`
         }
     });
 }));
