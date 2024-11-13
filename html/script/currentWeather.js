@@ -5,7 +5,12 @@ class UserPosition {
     }
 }
 
-const WeatherCard = document.querySelector(".weather-card");
+const CurrentTemp = document.querySelector(".current-weather .temperature");
+const CurrentHumidity = document.querySelector(".weather-details .humidity-value");
+const CurrentWind = document.querySelector(".weather-details .wind-value");
+const CurrentSkyIcon = document.querySelector(".current-weather .icon");
+const CurrentSkyDescription = document.querySelector(".current-weather .description");
+const CurrentWindDirection = document.querySelector(".weather-details .direction-value");
 
 var date = new Date();
 
@@ -33,24 +38,17 @@ const ServiceKey = `8pZx3zpwmiP6xng2EUvTlOz6qnesip%2BuYn70GCdXph%2FQek0Ws9N6r0YU
 const CurrnetWeather = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&base_date=${Today}&base_time=${Time}&nx=89&ny=90`
 
 fetch(CurrnetWeather).then(res => res.json().then(data => {
-    const CurrentTemp = document.querySelector(".current-weather .temperature");
-    const CurrentHumidity = document.querySelector(".weather-details .humidity-value");
-    const CurrentWind = document.querySelector(".weather-details .wind-value");
-    const CurrentSkyIcon = document.querySelector(".current-weather .icon");
-    const CurrentSkyDescription = document.querySelector(".current-weather .description");
-    const CurrentWindDirection = document.querySelector(".weather-details .direction-value");
-
     const CurrentWeatherInfo = data.response.body.items.item;
     // Object.keys(CurrentWeatherInfo).forEach((i) => {
     //     console.log(CurrentWeatherInfo[i])
     // });
     Object.keys(CurrentWeatherInfo).forEach((i) => {
-        const isCurrentTemp = CurrentWeatherInfo[i].category == `T1H` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
-        const isCurrentHumidity = CurrentWeatherInfo[i].category == `REH` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
-        const isCurrentWind = CurrentWeatherInfo[i].category == `WSD` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
-        const isCurrentSky = CurrentWeatherInfo[i].category == `SKY` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
-        const isCurrentWindDir = CurrentWeatherInfo[i].category == `VEC` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
-        const Value = CurrentWeatherInfo[i].fcstValue;
+        var isCurrentTemp = CurrentWeatherInfo[i].category == `T1H` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
+        var isCurrentHumidity = CurrentWeatherInfo[i].category == `REH` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
+        var isCurrentWind = CurrentWeatherInfo[i].category == `WSD` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
+        var isCurrentSky = CurrentWeatherInfo[i].category == `SKY` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
+        var isCurrentWindDir = CurrentWeatherInfo[i].category == `VEC` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
+        var Value = CurrentWeatherInfo[i].fcstValue;
         if (isCurrentTemp) {
             CurrentTemp.innerText = `${Value}°C`;
             return;
