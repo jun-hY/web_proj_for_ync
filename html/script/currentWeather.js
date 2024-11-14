@@ -1,10 +1,3 @@
-class UserPosition {
-    constructor(latitude, longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
-}
-
 const CurrentTemp = document.querySelector(".current-weather .temperature");
 const CurrentHumidity = document.querySelector(".weather-details .humidity-value");
 const CurrentWind = document.querySelector(".weather-details .wind-value");
@@ -22,7 +15,7 @@ var hours = ('0' + date.getHours()).slice(-2);
 var minutes = ('0' + date.getMinutes()).slice(-2);
 const Today = year + month + day;
 
-const Time = Number(minutes) >= 45 ? `${hours}30` : `${Number(hours) - 1}30`;
+const Time = Number(minutes) >= 45 ? `${hours}30` : `0${Number(hours) - 1}30`.slice(-4);
 
 
 // 초단기 실황 조회 api
@@ -43,11 +36,11 @@ fetch(CurrnetWeather).then(res => res.json().then(data => {
     //     console.log(CurrentWeatherInfo[i])
     // });
     Object.keys(CurrentWeatherInfo).forEach((i) => {
-        var isCurrentTemp = CurrentWeatherInfo[i].category == `T1H` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
-        var isCurrentHumidity = CurrentWeatherInfo[i].category == `REH` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
-        var isCurrentWind = CurrentWeatherInfo[i].category == `WSD` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
-        var isCurrentSky = CurrentWeatherInfo[i].category == `SKY` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
-        var isCurrentWindDir = CurrentWeatherInfo[i].category == `VEC` && CurrentWeatherInfo[i].fcstTime == `${Number(hours) + 1}00`
+        var isCurrentTemp = CurrentWeatherInfo[i].category == `T1H` && CurrentWeatherInfo[i].fcstTime == `0${Number(hours) + 1}00`.slice(-4)
+        var isCurrentHumidity = CurrentWeatherInfo[i].category == `REH` && CurrentWeatherInfo[i].fcstTime == `0${Number(hours) + 1}00`.slice(-4)
+        var isCurrentWind = CurrentWeatherInfo[i].category == `WSD` && CurrentWeatherInfo[i].fcstTime == `0${Number(hours) + 1}00`.slice(-4)
+        var isCurrentSky = CurrentWeatherInfo[i].category == `SKY` && CurrentWeatherInfo[i].fcstTime == `0${Number(hours) + 1}00`.slice(-4)
+        var isCurrentWindDir = CurrentWeatherInfo[i].category == `VEC` && CurrentWeatherInfo[i].fcstTime == `0${Number(hours) + 1}00`.slice(-4)
         var Value = CurrentWeatherInfo[i].fcstValue;
         if (isCurrentTemp) {
             CurrentTemp.innerText = `${Value}°C`;
