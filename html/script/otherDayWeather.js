@@ -15,30 +15,6 @@ function getDateOnFormat(date) {
     return year + month + day;
 }
 
-// 
-function getDayByString(date) {
-    var day = new Date();
-    day.setFullYear("20" + ((date).slice(0, 2)))
-    day.setMonth(Number((date).slice(3, 5)) - 1)
-    day.setDate((date).slice(-2))
-    switch (day.getDay()) {
-        case 0:
-            return `Sun`;
-        case 1:
-            return `Mon`;
-        case 2:
-            return `Tue`;
-        case 3:
-            return `Wed`;
-        case 4:
-            return `Thu`;
-        case 5:
-            return `Fri`;
-        case 6:
-            return `Sat`;
-    }
-}
-
 const TimeSet = () => {
     var Today = new Date();
     var time = [getDateOnFormat(Today), ''];
@@ -64,21 +40,24 @@ const TimeSet = () => {
 const Time = TimeSet();
 
 var day = new Date();
-day.setFullYear(((Time[0]).slice(0, 4)));
-day.setMonth(Number((Time[0]).slice(4, 6)) - 1);
-day.setDate((Time[0]).slice(-2));
 var fiveDays = [];
 for (var i = 1; i <= 5; i++) {
-    fiveDays.push(day.getTime() + (DAY_TO_TIME * i));
+    fiveDays.push(new Date(day.getTime() + (DAY_TO_TIME * i)));
 }
 days.setDays(fiveDays);
+fiveDays.forEach(i => {
+    console.log(i.getDate());
+})
 
 const ServiceKey = `8pZx3zpwmiP6xng2EUvTlOz6qnesip%2BuYn70GCdXph%2FQek0Ws9N6r0YU4iLHZgputh87KbB8m6XsQGecpxiIaA%3D%3D`;
 const OtherDayWeather = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${ServiceKey}&numOfRows=1000&pageNo=1&dataType=JSON&base_date=${Time[0]}&base_time=${Time[1]}&nx=89&ny=90`;
 
-fetch(OtherDayWeather).then(res => res.json().then(data => {
-    const OtherDayWeatherInfo = data.response.body.items.item;
-    Object.keys(OtherDayWeatherInfo).forEach((i) => {
-        console.log(OtherDayWeatherInfo[i]);
-    });
-}))
+// fetch(OtherDayWeather).then(res => res.json().then(data => {
+//     const OtherDayWeatherInfo = data.response.body.items.item;
+//     var fcstTime = OtherDayWeatherInfo.fcstTime;
+//     Object.keys(OtherDayWeatherInfo).forEach((i) => {
+//         if (fcstTime) {
+
+//         }
+//     });
+// }))
