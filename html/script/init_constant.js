@@ -37,10 +37,31 @@ export class Days {
         this.FIFTH_DAY_NAME = document.querySelector('#fifth-day .name');
     }
     setDays(days) {
-        this.FIRST_DAY_NAME.innerText = days[0];
-        this.SECOND_DAY_NAME.innerText = days[1];
-        this.THIRD_DAY_NAME.innerText = days[2];
-        this.FOURTH_DAY_NAME.innerText = days[3];
-        this.FIFTH_DAY_NAME.innerText = days[4];
+        this.FIRST_DAY_NAME.innerText = this.getDayByTime(days[0]);
+        this.SECOND_DAY_NAME.innerText = this.getDayByTime(days[1]);
+        this.THIRD_DAY_NAME.innerText = this.getDayByTime(days[2]);
+        this.FOURTH_DAY_NAME.innerText = this.getDayByTime(days[3]);
+        this.FIFTH_DAY_NAME.innerText = this.getDayByTime(days[4]);
+    }
+
+    getDayByTime(date) {
+        var day = new Date();
+        day.setTime(date);
+        switch (day.getDay()) {
+            case 0:
+                return `Sun`;
+            case 1:
+                return `Mon`;
+            case 2:
+                return `Tue`;
+            case 3:
+                return `Wed`;
+            case 4:
+                return `Thu`;
+            case 5:
+                return `Fri`;
+            case 6:
+                return `Sat`;
+        }
     }
 }
