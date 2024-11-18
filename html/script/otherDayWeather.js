@@ -1,8 +1,11 @@
-import { Names, Icons, Temps } from './init_constant.js'
+import { Names, Icons, Temps, Days } from './init_constant.js'
 
 const names = new Names();
 const icons = new Icons();
 const temps = new Temps();
+const days = new Days();
+const DAY_TO_TIME = 86400000;
+const BaseTime = [2, 5, 8, 11, 14, 17, 20, 23];
 
 function getDateOnFormat(date) {
     var year = date.getFullYear();
@@ -11,7 +14,7 @@ function getDateOnFormat(date) {
     return year + month + day;
 }
 
-function getDayInString(date) {
+function getDayByString(date) {
     var day = new Date();
     day.setFullYear("20" + ((date).slice(0, 2)))
     day.setMonth(Number((date).slice(3, 5)) - 1)
@@ -34,7 +37,26 @@ function getDayInString(date) {
     }
 }
 
-const BaseTime = [2, 5, 8, 11, 14, 17, 20, 23];
+function getDayByTime(date) {
+    var day = new Date();
+    day.setTime(date);
+    switch (day.getDay()) {
+        case 0:
+            return `Sun`;
+        case 1:
+            return `Mon`;
+        case 2:
+            return `Tue`;
+        case 3:
+            return `Wed`;
+        case 4:
+            return `Thu`;
+        case 5:
+            return `Fri`;
+        case 6:
+            return `Sat`;
+    }
+}
 
 const TimeSet = () => {
     var Today = new Date();
@@ -42,7 +64,7 @@ const TimeSet = () => {
     var hours = ('0' + Today.getHours()).slice(-2);
     var minutes = ('0' + Today.getMinutes()).slice(-2);
     if (hours <= BaseTime[0] && minutes < 10) {
-        var yesterday = new Date(Today.getTime - 86400000);
+        var yesterday = new Date(Today.getTime - DAY_TO_TIME);
         time = [getDateOnFormat(yesterday), '2300'];
         return time;
     }
@@ -60,12 +82,22 @@ const TimeSet = () => {
 }
 const Time = TimeSet();
 
+var day = new Date();
+day.setFullYear(((Time[0]).slice(0, 4)));
+day.setMonth(Number((Time[0]).slice(4, 6)) - 1);
+day.setDate((Time[0]).slice(-2));
+var arr = [];
+for (var i = 1; i <= 5; i++) {
+    arr.push(getDayByTime(day.getTime() + (DAY_TO_TIME * i)));
+}
+days.setDays(arr);
+
 const ServiceKey = `8pZx3zpwmiP6xng2EUvTlOz6qnesip%2BuYn70GCdXph%2FQek0Ws9N6r0YU4iLHZgputh87KbB8m6XsQGecpxiIaA%3D%3D`;
 const OtherDayWeather = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${ServiceKey}&numOfRows=918&pageNo=1&dataType=JSON&base_date=${Time[0]}&base_time=${Time[1]}&nx=89&ny=90`;
 
-fetch(OtherDayWeather).then(res => res.json().then(data => {
-    const OtherDayWeatherInfo = data.response.body.items.item;
-    Object.keys(OtherDayWeatherInfo).forEach((i) => {
-        console.log(OtherDayWeatherInfo[i]);
-    })
-}))
+// fetch(OtherDayWeather).then(res => res.json().then(data => {
+//     const OtherDayWeatherInfo = data.response.body.items.item;
+//     Object.keys(OtherDayWeatherInfo).forEach((i) => {
+//         console.log(OtherDayWeatherInfo[i]);
+//     })
+// }))
