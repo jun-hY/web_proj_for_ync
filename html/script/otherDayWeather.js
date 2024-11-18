@@ -39,29 +39,6 @@ function getDayByString(date) {
     }
 }
 
-// Date객체의 getTime()메서드로 반환된 수를 인자로 함
-// 요일을 반환함
-function getDayByTime(date) {
-    var day = new Date();
-    day.setTime(date);
-    switch (day.getDay()) {
-        case 0:
-            return `Sun`;
-        case 1:
-            return `Mon`;
-        case 2:
-            return `Tue`;
-        case 3:
-            return `Wed`;
-        case 4:
-            return `Thu`;
-        case 5:
-            return `Fri`;
-        case 6:
-            return `Sat`;
-    }
-}
-
 const TimeSet = () => {
     var Today = new Date();
     var time = [getDateOnFormat(Today), ''];
