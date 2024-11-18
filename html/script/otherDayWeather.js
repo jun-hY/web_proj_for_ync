@@ -7,6 +7,7 @@ const days = new Days();
 const DAY_TO_TIME = 86400000;
 const BaseTime = [2, 5, 8, 11, 14, 17, 20, 23];
 
+// yyyymmdd 형태로 반환. Date객체를 인자로 함
 function getDateOnFormat(date) {
     var year = date.getFullYear();
     var month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -14,6 +15,7 @@ function getDateOnFormat(date) {
     return year + month + day;
 }
 
+// 
 function getDayByString(date) {
     var day = new Date();
     day.setFullYear("20" + ((date).slice(0, 2)))
@@ -37,6 +39,8 @@ function getDayByString(date) {
     }
 }
 
+// Date객체의 getTime()메서드로 반환된 수를 인자로 함
+// 요일을 반환함
 function getDayByTime(date) {
     var day = new Date();
     day.setTime(date);
@@ -86,11 +90,11 @@ var day = new Date();
 day.setFullYear(((Time[0]).slice(0, 4)));
 day.setMonth(Number((Time[0]).slice(4, 6)) - 1);
 day.setDate((Time[0]).slice(-2));
-var arr = [];
+var fiveDays = [];
 for (var i = 1; i <= 5; i++) {
-    arr.push(getDayByTime(day.getTime() + (DAY_TO_TIME * i)));
+    fiveDays.push(getDayByTime(day.getTime() + (DAY_TO_TIME * i)));
 }
-days.setDays(arr);
+days.setDays(fiveDays);
 
 const ServiceKey = `8pZx3zpwmiP6xng2EUvTlOz6qnesip%2BuYn70GCdXph%2FQek0Ws9N6r0YU4iLHZgputh87KbB8m6XsQGecpxiIaA%3D%3D`;
 const OtherDayWeather = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${ServiceKey}&numOfRows=918&pageNo=1&dataType=JSON&base_date=${Time[0]}&base_time=${Time[1]}&nx=89&ny=90`;
