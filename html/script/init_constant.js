@@ -27,3 +27,20 @@ export class Temps {
         this.FIFTH_DAY_TEMP = document.querySelector('#fifth-day .temp');
     }
 }
+
+export class Days {
+    constructor() {
+        this.FIRST_DAY_NAME = document.querySelector('#first-day .name');
+        this.SECOND_DAY_NAME = document.querySelector('#second-day .name');
+        this.THIRD_DAY_NAME = document.querySelector('#third-day .name');
+        this.FOURTH_DAY_NAME = document.querySelector('#fourth-day .name');
+        this.FIFTH_DAY_NAME = document.querySelector('#fifth-day .name');
+    }
+    setDays(days) {
+        this.FIRST_DAY_NAME.innerText = days[0];
+        this.SECOND_DAY_NAME.innerText = days[1];
+        this.THIRD_DAY_NAME.innerText = days[2];
+        this.FOURTH_DAY_NAME.innerText = days[3];
+        this.FIFTH_DAY_NAME.innerText = days[4];
+    }
+}
