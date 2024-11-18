@@ -11,23 +11,26 @@ function getDateOnFormat(date) {
     return year + month + day;
 }
 
-function getDayInKorean(date) {
-    var day = new Date(date);
+function getDayInString(date) {
+    var day = new Date();
+    day.setFullYear("20" + ((date).slice(0, 2)))
+    day.setMonth(Number((date).slice(3, 5)) - 1)
+    day.setDate((date).slice(-2))
     switch (day.getDay()) {
         case 0:
-            return `SUN`;
+            return `Sun`;
         case 1:
-            return `MON`;
+            return `Mon`;
         case 2:
-            return `TUE`;
+            return `Tue`;
         case 3:
-            return `WED`;
+            return `Wed`;
         case 4:
-            return `THU`;
+            return `Thu`;
         case 5:
-            return `FRI`;
+            return `Fri`;
         case 6:
-            return `SAT`;
+            return `Sat`;
     }
 }
 
