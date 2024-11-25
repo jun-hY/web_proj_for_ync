@@ -51,13 +51,13 @@ for (var i = 0; i < 5; i++) {
 
 const ServiceKey = `8pZx3zpwmiP6xng2EUvTlOz6qnesip%2BuYn70GCdXph%2FQek0Ws9N6r0YU4iLHZgputh87KbB8m6XsQGecpxiIaA%3D%3D`;
 const OtherDayWeather = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${ServiceKey}&numOfRows=1000&pageNo=1&dataType=JSON&base_date=${Time[0]}&base_time=${Time[1]}&nx=89&ny=90`;
+const threeDaysLaterTemp = `http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&regId=11H10701&tmFc=202411250600`;
+const threeDaysLaterSky = `http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&regId=11H10000&tmFc=202411250600`;
 
 fetch(OtherDayWeather).then(res => res.json().then(data => {
     const OtherDayWeatherInfo = data.response.body.items.item;
     Object.keys(OtherDayWeatherInfo).forEach((i) => {
-        console.log(OtherDayWeatherInfo[i]);
-    });
-    Object.keys(OtherDayWeatherInfo).forEach((i) => {
+        if (fcstDate == fiveDays[2]) return;
         var fcstTime = OtherDayWeatherInfo[i].fcstTime;
         var fcstDate = OtherDayWeatherInfo[i].fcstDate;
         var category = OtherDayWeatherInfo[i].category;
@@ -76,4 +76,16 @@ fetch(OtherDayWeather).then(res => res.json().then(data => {
             }
         }
     });
+}));
+
+fetch(threeDaysLaterTemp).then(res => res.json().then(data => {
+    const items = data.response.body.items.item[0]
+    temps.setTemp(2, Math.round((items.taMax3 + items.taMin3) / 2));
+    temps.setTemp(3, Math.round((items.taMax4 + items.taMin4) / 2));
+    temps.setTemp(4, Math.round((items.taMax5 + items.taMin5) / 2));
+}));
+
+fetch(threeDaysLaterSky).then(res => res.json().then(data => {
+    const items = data.response.body.items.item[0];
+    console.log(items);
 }))
