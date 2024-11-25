@@ -7,7 +7,7 @@ const days = new Days();
 const DAY_TO_TIME = 86400000;
 const BaseTime = [2, 5, 8, 11, 14, 17, 20, 23];
 
-// yyyymmdd 형태로 반환. Date객체를 인자로 함
+/** yyyymmdd 형태로 반환. Date객체를 인자로 함 */
 function getDateOnFormat(date) {
     var year = date.getFullYear();
     var month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -45,19 +45,35 @@ for (var i = 1; i <= 5; i++) {
     fiveDays.push(new Date(day.getTime() + (DAY_TO_TIME * i)));
 }
 days.setDays(fiveDays);
-fiveDays.forEach(i => {
-    console.log(i.getDate());
-})
+for (var i = 0; i < 5; i++) {
+    fiveDays[i] = getDateOnFormat(fiveDays[i]);
+}
 
 const ServiceKey = `8pZx3zpwmiP6xng2EUvTlOz6qnesip%2BuYn70GCdXph%2FQek0Ws9N6r0YU4iLHZgputh87KbB8m6XsQGecpxiIaA%3D%3D`;
 const OtherDayWeather = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${ServiceKey}&numOfRows=1000&pageNo=1&dataType=JSON&base_date=${Time[0]}&base_time=${Time[1]}&nx=89&ny=90`;
 
-// fetch(OtherDayWeather).then(res => res.json().then(data => {
-//     const OtherDayWeatherInfo = data.response.body.items.item;
-//     var fcstTime = OtherDayWeatherInfo.fcstTime;
-//     Object.keys(OtherDayWeatherInfo).forEach((i) => {
-//         if (fcstTime) {
+fetch(OtherDayWeather).then(res => res.json().then(data => {
+    const OtherDayWeatherInfo = data.response.body.items.item;
+    Object.keys(OtherDayWeatherInfo).forEach((i) => {
+        console.log(OtherDayWeatherInfo[i]);
+    });
+    Object.keys(OtherDayWeatherInfo).forEach((i) => {
+        var fcstTime = OtherDayWeatherInfo[i].fcstTime;
+        var fcstDate = OtherDayWeatherInfo[i].fcstDate;
+        var category = OtherDayWeatherInfo[i].category;
+        var value = OtherDayWeatherInfo[i].fcstValue;
 
-//         }
-//     });
-// }))
+        if (fiveDays.includes(fcstDate)) {
+            if (fcstTime == '1200') {
+                if (category === 'TMP') {
+                    temps.setTemp(fiveDays.findIndex(e => e == fcstDate), value);
+                    return;
+                }
+                if (category == 'SKY') {
+                    icons.setIcon(fiveDays.findIndex(e => e == fcstDate), value);
+                    return;
+                }
+            }
+        }
+    });
+}))

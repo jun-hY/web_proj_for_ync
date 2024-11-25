@@ -16,6 +16,24 @@ export class Icons {
         this.FOURTH_DAY_ICON = document.querySelector('#fourth-day .icon');
         this.FIFTH_DAY_ICON = document.querySelector('#fifth-day .icon');
     }
+
+    setIcon(index, value) {
+        if (index == 0) {
+            this.FIRST_DAY_ICON.innerText = `${value < 3 ? `☀️` : value < 4 ? `🌤️` : `☁️`}`
+        }
+        else if (index == 1) {
+            this.SECOND_DAY_ICON.innerText = `${value < 3 ? `☀️` : value < 4 ? `🌤️` : `☁️`}`
+        }
+        else if (index == 2) {
+            this.THIRD_DAY_ICON.innerText = `${value < 3 ? `☀️` : value < 4 ? `🌤️` : `☁️`}`
+        }
+        else if (index == 3) {
+            this.FOURTH_DAY_ICON.innerText = `${value < 3 ? `☀️` : value < 4 ? `🌤️` : `☁️`}`
+        }
+        else if (index == 4) {
+            this.FIFTH_DAY_ICON.innerText = `${value < 3 ? `☀️` : value < 4 ? `🌤️` : `☁️`}`
+        }
+    }
 }
 
 export class Temps {
@@ -25,6 +43,24 @@ export class Temps {
         this.THIRD_DAY_TEMP = document.querySelector('#third-day .temp');
         this.FOURTH_DAY_TEMP = document.querySelector('#fourth-day .temp');
         this.FIFTH_DAY_TEMP = document.querySelector('#fifth-day .temp');
+    }
+
+    setTemp(index, value) {
+        if (index == 0) {
+            this.FIRST_DAY_TEMP.innerText = `${value}°C`
+        }
+        else if (index == 1) {
+            this.SECOND_DAY_TEMP.innerText = `${value}°C`
+        }
+        else if (index == 2) {
+            this.THIRD_DAY_TEMP.innerText = `${value}°C`
+        }
+        else if (index == 3) {
+            this.FOURTH_DAY_TEMP.innerText = `${value}°C`
+        }
+        else if (index == 4) {
+            this.FIFTH_DAY_TEMP.innerText = `${value}°C`
+        }
     }
 }
 
