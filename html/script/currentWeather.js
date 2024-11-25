@@ -4,6 +4,7 @@ const CurrentWind = document.querySelector(".weather-details .wind-value");
 const CurrentSkyIcon = document.querySelector(".current-weather .icon");
 const CurrentSkyDescription = document.querySelector(".current-weather .description");
 const CurrentWindDirection = document.querySelector(".weather-details .direction-value");
+const DAY_TO_TIME = 86400000;
 
 var date = new Date();
 
@@ -13,9 +14,19 @@ var day = ('0' + date.getDate()).slice(-2);
 
 var hours = ('0' + date.getHours()).slice(-2);
 var minutes = ('0' + date.getMinutes()).slice(-2);
-const Today = year + month + day;
+const IS_OVER_45_MINUTES = Number(minutes) >= 45;
+const CAN_WE_GET_TODAY_API = hours <= 0 && !IS_OVER_45_MINUTES;
 
-const Time = Number(minutes) >= 45 ? `${hours}30` : `0${Number(hours) - 1}30`.slice(-4);
+const Today = CAN_WE_GET_TODAY_API ? `${(yesterday) => {
+    yesterday = new Date(date.getTime() - DAY_TO_TIME);
+    var year = yesterday.getFullYear();
+    var month = ('0' + (yesterday.getMonth() + 1)).slice(-2);
+    var day = ('0' + yesterday.getDate()).slice(-2);
+    return year + month + day;
+}}` : year + month + day;
+
+const Time = IS_OVER_45_MINUTES ? `${hours}30` : `0${Number(hours) - 1}30`.slice(-4);
+
 
 
 // 초단기 실황 조회 api
