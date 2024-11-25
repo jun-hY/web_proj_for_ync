@@ -27,8 +27,6 @@ const Today = CAN_WE_GET_TODAY_API ? `${(yesterday) => {
 
 const Time = IS_OVER_45_MINUTES ? `${hours}30` : `0${Number(hours) - 1}30`.slice(-4);
 
-
-
 // 초단기 실황 조회 api
 // `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?serviceKey=${ServiceKey}&numOfRows=10&pageNo=1&dataType=JSON&base_date=${Today}&base_time=${Time}&nx=89&ny=90`
 
@@ -52,36 +50,53 @@ fetch(CurrnetWeather).then(res => res.json().then(data => {
         var isCurrentWind = CurrentWeatherInfo[i].category == `WSD` && CurrentWeatherInfo[i].fcstTime == `0${Number(hours) + 1}00`.slice(-4)
         var isCurrentSky = CurrentWeatherInfo[i].category == `SKY` && CurrentWeatherInfo[i].fcstTime == `0${Number(hours) + 1}00`.slice(-4)
         var isCurrentWindDir = CurrentWeatherInfo[i].category == `VEC` && CurrentWeatherInfo[i].fcstTime == `0${Number(hours) + 1}00`.slice(-4)
-        var Value = CurrentWeatherInfo[i].fcstValue;
+        var isCurrentRain = CurrentWeatherInfo[i].category == `PTY` && CurrentWeatherInfo[i].fcstTime == `0${Number(hours) + 1}00`.slice(-4)
+        var value = CurrentWeatherInfo[i].fcstValue;
         if (isCurrentTemp) {
-            CurrentTemp.innerText = `${Value}°C`;
+            CurrentTemp.innerText = `${value}°C`;
             return;
         }
         if (isCurrentHumidity) {
-            CurrentHumidity.innerText = `${Value}%`;
+            CurrentHumidity.innerText = `${value}%`;
             return;
         }
         if (isCurrentWind) {
-            CurrentWind.innerText = `${Value} m/s`;
+            CurrentWind.innerText = `${value} m/s`;
             return;
         }
         if (isCurrentSky) {
-            CurrentSkyIcon.innerText = `${Value < 3 ? `☀️` : Value < 4 ? `🌤️` : `☁️`}`;
-            CurrentSkyDescription.innerText = `${Value < 3 ? `맑음` : Value < 4 ? `구름많음` : `흐림`}`;
+            CurrentSkyIcon.innerText = `${value < 3 ? `☀️` : value < 4 ? `🌤️` : `☁️`}`;
+            CurrentSkyDescription.innerText = `${value < 3 ? `맑음` : value < 4 ? `구름많음` : `흐림`}`;
             return;
         }
         if (isCurrentWindDir) {
             var direction = ``;
-            if (Value > 337 || Value <= 22) direction = `⬇`;
-            else if (Value <= 67) direction = `⬋`;
-            else if (Value <= 112) direction = `⬅`;
-            else if (Value <= 157) direction = `⬉`;
-            else if (Value <= 202) direction = `⬆`;
-            else if (Value <= 247) direction = `⬈`;
-            else if (Value <= 292) direction = `⮕`;
-            else if (Value <= 337) direction = `⬊`;
+            if (value > 337 || value <= 22) direction = `⬇`;
+            else if (value <= 67) direction = `⬋`;
+            else if (value <= 112) direction = `⬅`;
+            else if (value <= 157) direction = `⬉`;
+            else if (value <= 202) direction = `⬆`;
+            else if (value <= 247) direction = `⬈`;
+            else if (value <= 292) direction = `⮕`;
+            else if (value <= 337) direction = `⬊`;
 
             CurrentWindDirection.innerText = `${direction}`
+            return;
+        }
+        if (isCurrentRain && value != `0`) {
+            if (Number(value) > 5) {
+                CurrentSkyIcon.innerText = `🌨️`;
+                CurrentSkyDescription.innerText = `눈날림`;
+            } else if (Number(value) > 4) {
+                CurrentSkyIcon.innerText = `🌧️`;
+                CurrentSkyDescription.innerText = `비`;
+            } else if (Number(value) > 2) {
+                CurrentSkyIcon.innerText = `☃️`;
+                CurrentSkyDescription.innerText = `눈`;
+            } else if (Number(value) > 0) {
+                CurrentSkyIcon.innerText = `🌧️`;
+                CurrentSkyDescription.innerText = `비`;
+            }
         }
     });
 }));

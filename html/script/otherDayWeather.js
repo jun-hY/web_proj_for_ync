@@ -50,30 +50,33 @@ for (var i = 0; i < 5; i++) {
 }
 
 const ServiceKey = `8pZx3zpwmiP6xng2EUvTlOz6qnesip%2BuYn70GCdXph%2FQek0Ws9N6r0YU4iLHZgputh87KbB8m6XsQGecpxiIaA%3D%3D`;
-const OtherDayWeather = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${ServiceKey}&numOfRows=1000&pageNo=1&dataType=JSON&base_date=${Time[0]}&base_time=${Time[1]}&nx=89&ny=90`;
+const OtherDayWeather = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${ServiceKey}&numOfRows=700&pageNo=1&dataType=JSON&base_date=${Time[0]}&base_time=${Time[1]}&nx=89&ny=90`;
 const threeDaysLaterTemp = `http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&regId=11H10701&tmFc=202411250600`;
 const threeDaysLaterSky = `http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&regId=11H10000&tmFc=202411250600`;
 
 fetch(OtherDayWeather).then(res => res.json().then(data => {
     const OtherDayWeatherInfo = data.response.body.items.item;
+    // console.log(OtherDayWeatherInfo);
     Object.keys(OtherDayWeatherInfo).forEach((i) => {
-        if (fcstDate == fiveDays[2]) return;
         var fcstTime = OtherDayWeatherInfo[i].fcstTime;
         var fcstDate = OtherDayWeatherInfo[i].fcstDate;
         var category = OtherDayWeatherInfo[i].category;
         var value = OtherDayWeatherInfo[i].fcstValue;
 
-        if (fiveDays.includes(fcstDate)) {
-            if (fcstTime == '1200') {
-                if (category === 'TMP') {
-                    temps.setTemp(fiveDays.findIndex(e => e == fcstDate), value);
-                    return;
-                }
-                if (category == 'SKY') {
-                    icons.setIcon(fiveDays.findIndex(e => e == fcstDate), value);
-                    return;
-                }
-            }
+        if (Number(fcstDate) >= Number(fiveDays[2])) return;
+        if (!fiveDays.includes(fcstDate)) return;
+        if (fcstTime != '1200') return;
+
+        if (category === 'TMP') {
+            temps.setTemp(fiveDays.findIndex(e => e == fcstDate), value);
+            return;
+        }
+        if (category == 'SKY') {
+            icons.setIcon(fiveDays.findIndex(e => e == fcstDate), value);
+            return;
+        }
+        if (category == 'PTY' && value != `0`) {
+            icons.setRainIcon(fiveDays.findIndex(e => e == fcstDate), value);
         }
     });
 }));
@@ -87,5 +90,22 @@ fetch(threeDaysLaterTemp).then(res => res.json().then(data => {
 
 fetch(threeDaysLaterSky).then(res => res.json().then(data => {
     const items = data.response.body.items.item[0];
-    console.log(items);
-}))
+    var wf3Pm = (`` + items.wf3Am).split(' ');
+    var wf4Pm = (`` + items.wf4Pm).split(' ');
+    var wf5Pm = (`` + items.wf5Pm).split(' ');
+    if (wf3Pm.length < 2) {
+        wf3Pm[0].startsWith(`맑`) ? icons.setIcon(2, 1) : wf3Pm[0].startsWith(`구`) ? icons.setIcon(2, 3) : icons.setIcon(2, 4)
+    } else {
+        wf3Pm[1].startsWith(`눈`) ? icons.setRainIcon(2, 3) : wf3Pm[1].startsWith(`소나기`) ? icons.setRainIcon(2, 4) : icons.setRainIcon(2, 1)
+    }
+    if (wf4Pm.length < 2) {
+        wf4Pm[0].startsWith(`맑`) ? icons.setIcon(3, 1) : wf4Pm[0].startsWith(`구`) ? icons.setIcon(3, 3) : icons.setIcon(3, 4)
+    } else {
+        wf4Pm[1].startsWith(`눈`) ? icons.setRainIcon(3, 3) : wf4Pm[1].startsWith(`소나기`) ? icons.setRainIcon(3, 4) : icons.setRainIcon(3, 1)
+    }
+    if (wf5Pm.length < 2) {
+        wf5Pm[0].startsWith(`맑`) ? icons.setIcon(4, 1) : wf5Pm[0].startsWith(`구`) ? icons.setIcon(4, 3) : icons.setIcon(4, 4)
+    } else {
+        wf5Pm[1].startsWith(`눈`) ? icons.setRainIcon(4, 3) : wf5Pm[1].startsWith(`소나기`) ? icons.setRainIcon(4, 4) : icons.setRainIcon(4, 1)
+    }
+}));

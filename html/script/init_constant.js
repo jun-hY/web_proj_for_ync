@@ -34,6 +34,24 @@ export class Icons {
             this.FIFTH_DAY_ICON.innerText = `${value < 3 ? `☀️` : value < 4 ? `🌤️` : `☁️`}`
         }
     }
+
+    setRainIcon(index, value) {
+        if (index == 0) {
+            this.FIRST_DAY_ICON.innerText = `${value < 3 ? `🌧️` : value < 4 ? `☃️` : `🌦️`}`
+        }
+        else if (index == 1) {
+            this.SECOND_DAY_ICON.innerText = `${value < 3 ? `🌧️` : value < 4 ? `☃️` : `🌦️`}`
+        }
+        else if (index == 2) {
+            this.THIRD_DAY_ICON.innerText = `${value < 3 ? `🌧️` : value < 4 ? `☃️` : `🌦️`}`
+        }
+        else if (index == 3) {
+            this.FOURTH_DAY_ICON.innerText = `${value < 3 ? `🌧️` : value < 4 ? `☃️` : `🌦️`}`
+        }
+        else if (index == 4) {
+            this.FIFTH_DAY_ICON.innerText = `${value < 3 ? `🌧️` : value < 4 ? `☃️` : `🌦️`}`
+        }
+    }
 }
 
 export class Temps {
