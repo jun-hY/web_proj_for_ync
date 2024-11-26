@@ -49,10 +49,12 @@ for (var i = 0; i < 5; i++) {
     fiveDays[i] = getDateOnFormat(fiveDays[i]);
 }
 
+
+
 const ServiceKey = `8pZx3zpwmiP6xng2EUvTlOz6qnesip%2BuYn70GCdXph%2FQek0Ws9N6r0YU4iLHZgputh87KbB8m6XsQGecpxiIaA%3D%3D`;
 const OtherDayWeather = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${ServiceKey}&numOfRows=700&pageNo=1&dataType=JSON&base_date=${Time[0]}&base_time=${Time[1]}&nx=89&ny=90`;
-const threeDaysLaterTemp = `http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&regId=11H10701&tmFc=202411250600`;
-const threeDaysLaterSky = `http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&regId=11H10000&tmFc=202411250600`;
+const threeDaysLaterTemp = `http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&regId=11H10701&tmFc=${hours < 18 ? (Time[0] + `0600`) : (Time[0] + `1800`)}`;
+const threeDaysLaterSky = `http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&regId=11H10000&tmFc=${hours < 18 ? (Time[0] + `0600`) : (Time[0] + `1800`)}`;
 
 fetch(OtherDayWeather).then(res => res.json().then(data => {
     const OtherDayWeatherInfo = data.response.body.items.item;
