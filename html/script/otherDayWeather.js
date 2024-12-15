@@ -50,11 +50,10 @@ for (var i = 0; i < 5; i++) {
 }
 
 
-
 const ServiceKey = `8pZx3zpwmiP6xng2EUvTlOz6qnesip%2BuYn70GCdXph%2FQek0Ws9N6r0YU4iLHZgputh87KbB8m6XsQGecpxiIaA%3D%3D`;
-const OtherDayWeather = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${ServiceKey}&numOfRows=700&pageNo=1&dataType=JSON&base_date=${Time[0]}&base_time=${Time[1]}&nx=89&ny=90`;
-const threeDaysLaterTemp = `http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&regId=11H10701&tmFc=${hours < 18 ? (Time[0] + `0600`) : (Time[0] + `1800`)}`;
-const threeDaysLaterSky = `http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&regId=11H10000&tmFc=${hours < 18 ? (Time[0] + `0600`) : (Time[0] + `1800`)}`;
+const OtherDayWeather = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${ServiceKey}&numOfRows=1000&pageNo=1&dataType=JSON&base_date=${Time[0]}&base_time=${Time[1]}&nx=89&ny=90`;
+const threeDaysLaterTemp = `http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&regId=11H10701&tmFc=${Time[0] + `0600`}`;
+const threeDaysLaterSky = `http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=${ServiceKey}&numOfRows=100&pageNo=1&dataType=JSON&regId=11H10000&tmFc=${Time[0] + `0600`}`;
 
 fetch(OtherDayWeather).then(res => res.json().then(data => {
     const OtherDayWeatherInfo = data.response.body.items.item;
@@ -65,7 +64,7 @@ fetch(OtherDayWeather).then(res => res.json().then(data => {
         var category = OtherDayWeatherInfo[i].category;
         var value = OtherDayWeatherInfo[i].fcstValue;
 
-        if (Number(fcstDate) >= Number(fiveDays[2])) return;
+        if (Number(fcstDate) > Number(fiveDays[2])) return;
         if (!fiveDays.includes(fcstDate)) return;
         if (fcstTime != '1200') return;
 
@@ -85,7 +84,6 @@ fetch(OtherDayWeather).then(res => res.json().then(data => {
 
 fetch(threeDaysLaterTemp).then(res => res.json().then(data => {
     const items = data.response.body.items.item[0]
-    temps.setTemp(2, Math.round((items.taMax3 + items.taMin3) / 2));
     temps.setTemp(3, Math.round((items.taMax4 + items.taMin4) / 2));
     temps.setTemp(4, Math.round((items.taMax5 + items.taMin5) / 2));
 }));
